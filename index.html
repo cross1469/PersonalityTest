@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>五大性格特質心理測驗</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/all.css">
+</head>
+
+<body>
+  <div id="app" class="bg">
+    <div class="h-100" v-if="questionIndex === 0">
+      <img class="d-md-none start-img" src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
+      <div class="container d-flex justify-content-center align-items-center start-box">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="card-title mb-4">{{ title.zh }}</h1>
+            <h6 class="card-subtitle text-muted">
+              {{ title.en }}
+            </h6>
+            <hr>
+            <p>{{ description }}</p>
+            <button type="button" class="btn btn-primary float-right mt-4 p-2" @click.prevent="questionIndex += 1">
+              開始測驗
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center questions-box" v-else-if="questionIndex > 0 && !result">
+      <div v-for="(question, index) in questions" :key="index">
+        <div v-if="questionIndex === index + 1">
+          <div class="d-flex justify-content-center align-items-center que-content">
+            <div class="card" id="index">
+              <div class="d-flex justify-content-center align-items-center queNum">
+                <span>Q{{ index + 1 }}</span>
+              </div>
+              <div class="card-body">
+                <h3>{{ question.problem }}</h3>
+                <div class="form-check card-text options-group" v-for="option in question.options"
+                  :key="option.category">
+                  <label class="form-check-label" :for="option.fraction">
+                    <input type="radio" class="form-check-input" :id="option.fraction"
+                      v-model="questionList[Math.floor(index/2)].point[index%2]" :name="question.id"
+                      :value="option.fraction" @click="isDisabledFn()" />
+                    <span>{{ option.description }}</span>
+                  </label>
+                </div>
+                <button type="button" class="btn btn-cyan float-right mt-5" v-if="index < 9"
+                  @click="nextPage(question.id)" :disabled="isDisabled">
+                  下一題
+                </button>
+                <button type="button" class="btn btn-danger float-right mt-5" v-else @click="showResult(question.id)"
+                  :disabled="isDisabled" :class="{'result-dis': isDisabled === true}">
+                  結果
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center result-box" v-else="result">
+      <div class="row result-bg">
+        <div class="col-lg-3 col-md-12 result-menu p-0">
+          <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a v-for="(result, index) in resultList" class="nav-btn"
+              :class="[{'active':index === 0 },'color-'+index+'-btn']" :id="'nav-'+index+'-tab'" data-toggle="pill"
+              :href="'#nav-'+index" role="tab" :aria-controls="'v-pills-'+index" aria-selected="true">
+              <span>{{ result.category }}</span>
+            </a>
+          </nav>
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-dark mt-5 desktop-btn" @click="resetData">
+              重新測驗
+            </button>
+          </div>
+        </div>
+        <div class="col-lg-9 col-md-12 py-3 result-content-bg">
+          <div class="tab-content" id="v-pills-tabContent">
+            <div :class="{'tab-pane':true, 'fade':true, 'show':true, active:index === 0}" role="tabpanel"
+              v-for="(result, index) in resultList" :key="index" :aria-labelledby="'v-pills-'+index+'-tab'"
+              :id="'nav-'+index">
+              <h3 class="card-title">{{ result.category }}- {{ result.degree }}</h3>
+              <small class="card-subtitle mb-2">{{ result.description.desc }} </small>
+              <hr />
+              <div class="card-text mt-2">
+                <div v-if="result.total <= 5">
+                  <h5>{{result.description.low}}</h5>
+                </div>
+                <div v-else-if="result.total <= 6">
+                  <h5>{{result.description.middle}}</h5>
+                  <br />
+                  <p>{{result.description.low}}</p>
+                  <p>{{result.description.high}}</p>
+                </div>
+                <div v-else>
+                  <h5>{{result.description.high}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rwd-btn-box justify-content-center">
+            <button type="button" class="btn btn-dark mt-5" @click="resetData">
+              重新測驗
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="./assets/js/all.js"></script>
+</body>
+
+</html>
