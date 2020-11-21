@@ -31,7 +31,7 @@
 
 .start-box .card {
   border: 0;
-  background: #f5fffa6b;
+  background: #eceaeab7;
   -webkit-box-shadow: 0 0 5px 3px #69636329;
           box-shadow: 0 0 5px 3px #69636329;
 }
@@ -71,7 +71,7 @@
 }
 
 .que-content .card {
-  background: #f5fffa6b;
+  background: #eceaeab7;
   border-top: 3px solid #3cafb5;
   border-bottom: 0;
   border-left: 0;
@@ -164,7 +164,8 @@
   display: none;
 }
 
-.btn-box .btn, .rwd-btn-box .btn {
+.btn-box .btn,
+.rwd-btn-box .btn {
   padding: 10px 20px;
   letter-spacing: 2px;
   border-radius: 0;

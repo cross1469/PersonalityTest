@@ -25,6 +25,11 @@
             </h6>
             <hr>
             <p>{{ description }}</p>
+            <small class="text-muted">作者：{{ editor.name }}</small>
+            <br>
+            <small class="text-muted">來源(hackmd)：{{ editor.hackmd }}</small>
+            <br>
+            <small class="text-muted">來源(blog)：{{ editor.blog }}</small>
             <button type="button" class="btn btn-primary float-right mt-4 p-2" @click.prevent="questionIndex += 1">
               開始測驗
             </button>
@@ -76,7 +81,7 @@
             </a>
           </nav>
           <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-dark mt-5 desktop-btn" @click="resetData">
+            <button type="button" class="btn btn-dark mt-5 mb-3 desktop-btn" @click="resetData">
               重新測驗
             </button>
           </div>

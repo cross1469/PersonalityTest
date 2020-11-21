@@ -16,6 +16,7 @@ const app = new Vue({
     problemList: {},
     questions: [],
     questionList: [],
+    editor:{},
     questionIndex: 0,
     result: false,
     resultList: [],
@@ -31,12 +32,13 @@ const app = new Vue({
       const api = 'https://raw.githubusercontent.com/hexschool/js-training-task/master/api/BigFive.json';
       axios.get(api)
         .then((res) => {
-          const { name, description ,degree ,traits ,problemList} = res.data;
+          const { name, description ,degree ,traits ,problemList, editor} = res.data;
           this.title = name; // 標題
           this.description = description; //敘述
           this.degree = degree; // 程度
           this.traits = traits; // 特質
           this.problemList = problemList; // 問題
+          this.editor = editor; // 作者
           for (index in this.problemList) {
             this.questionList.push({
               category: index,
