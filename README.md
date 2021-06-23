@@ -5,7 +5,7 @@ A platform for users to become the more familiar with the transaction process.
 
 ## Website Link
 
-Link: <https://cross1469.github.io/PersonalityTest> \
+Link: <https://cross1469.github.io/PersonalityTest>
 
 ## Techniques
 
