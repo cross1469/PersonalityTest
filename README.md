@@ -24,7 +24,7 @@ Link: <https://cross1469.github.io/PersonalityTest>
 
 ## Contact
 
-If you got any problem when using Personality test, or had any suggestion about it. Please feel free to contact with me via email.\
+If you got any problem when using Personality test, or had any suggestion about it. Please feel free to contact with me via email.
 
 - Author: Oakley, Liu
 - E-mail: <face9923029@gmail.com>
